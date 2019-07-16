@@ -23,16 +23,20 @@ impl Individual {
 		ind
 	}
 
+	fn mutate_genes(&self) -> String {
+		let rand_pos = thread_rng().gen_range(0, GENES.len());
+
+		String::from(GENES)[rand_pos..rand_pos + 1].to_string()
+	}
+
 	fn create_genome(&self) -> String {
 		let mut ret: String = String::new();
 		let mut count = TO_FIND.len();
-		let mut rand_pos = thread_rng().gen_range(0, GENES.len());
 
 		while count > 0 {
-			ret.push_str(&String::from(GENES)[rand_pos..rand_pos + 1]);
+			ret.push_str(&self.mutate_genes());
 
 			count -= 1;
-			rand_pos = thread_rng().gen_range(0, GENES.len());
 		}
 
 		ret
@@ -44,7 +48,7 @@ impl Individual {
 
 		let mut fitness: i32 = 0;
 
-		for i in 0..=TO_FIND.len() - 1 {
+		for i in 0..TO_FIND.len() {
 			c1 = String::from(TO_FIND).chars().nth(i as usize).unwrap();
 			c2 = self.genome.chars().nth(i as usize).unwrap();
 
