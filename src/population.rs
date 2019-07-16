@@ -1,5 +1,6 @@
 extern crate rand;
 
+use std::thread;
 use rand::prelude::*;
 use rand::seq::SliceRandom;
 
@@ -59,6 +60,48 @@ impl Population {
 
         self.calculate_best();
     }
+
+	fn mutate_population_threaded(&mut self) {
+        let mut new_generation: Vec<Individual> = vec![];
+        let elite: usize = ((10 * POPULATION_NR) / 100) as usize;
+        let rest: usize = ((90 * POPULATION_NR) / 100) as usize;
+
+		let mut children = vec![];
+
+		const THREAD_COUNT: usize = 5;
+
+		let chunk_size: usize = (rest / THREAD_COUNT) as usize;
+
+		for _i in 0..rest {
+			let chunk_clone = chunk.to_owned();
+
+			children.push(thread::spawn(move || -> Vec<Individual> {
+				let mut ret: Vec<Individual> = vec![];
+				let half_percent = ((50 * chunk_clone.len()) / 100) as usize;
+
+				for _i in 0..chunk_clone.len() {
+					let parent1 = chunk_clone[..half_percent].choose(&mut thread_rng()).unwrap();
+					let parent2 = chunk_clone[..half_percent].choose(&mut thread_rng()).unwrap();
+
+					let child: Individual = parent1.mate(parent2);
+
+					ret.push(child);
+				}
+
+				ret
+			}));
+		}
+
+        new_generation.extend_from_slice(&self.individuals[..elite]);
+
+		for child in children {
+			new_generation.extend_from_slice(&child.join().unwrap());
+		}
+
+        self.individuals = new_generation;
+
+        self.calculate_best();
+	}
 
     pub fn find_best(&mut self) -> &Individual {
         self.calculate_best();
