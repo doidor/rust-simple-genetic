@@ -35,7 +35,7 @@ impl Population {
     fn calculate_best(&mut self) {
         self.individuals
             .sort_by(|i1, i2| i2.fitness.cmp(&i1.fitness).reverse());
-        self.best_chromosome = String::from(&self.individuals[0].chromosome);
+        self.best_chromosome = self.individuals[0].chromosome.clone();
         self.best_fitness = self.individuals[0].fitness;
     }
 

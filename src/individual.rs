@@ -76,7 +76,7 @@ impl Individual {
 		let mut prob: f32 = thread_rng().gen_range(0.0, 1.0);
 
 		for (_i, (g1, g2)) in it.enumerate() {
-			if prob < 0.5_f32 {
+			if prob < 0.49_f32 {
 				mate_chromosome.push(g1);
 			} else if prob < 0.9_f32 {
 				mate_chromosome.push(g2);
