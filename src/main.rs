@@ -1,10 +1,11 @@
+mod config;
 mod individual;
-mod target;
+mod population;
 
-use individual::Individual;
+use population::Population;
 
 fn main() {
-    let ind = Individual::new();
+    let mut population = Population::new();
 
-	println!("{:?}", ind);
+    println!("{:?}", &population.find_best());
 }
