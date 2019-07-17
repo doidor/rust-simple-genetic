@@ -1,6 +1,5 @@
 extern crate rand;
 
-
 use rand::prelude::*;
 use rand::seq::SliceRandom;
 use std::thread;
