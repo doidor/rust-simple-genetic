@@ -122,7 +122,7 @@ impl Population {
 		let mut generation_count: i32 = 1;
 
 		println!("Evolving...");
-		println!("-----------------------------------------------------------");
+		println!("\n-----------------------------------------------------------");
 
 		self.calculate_best();
 
@@ -143,7 +143,7 @@ impl Population {
 			generation_count += 1;
 		}
 
-		println!("-----------------------------------------------------------");
+		println!("-----------------------------------------------------------\n");
 		println!("Finished in {} generations. Took {} ms.", generation_count, now.elapsed().as_millis());
 
 		&self.individuals[0]
