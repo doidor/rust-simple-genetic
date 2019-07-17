@@ -2,10 +2,17 @@ mod config;
 mod individual;
 mod population;
 
+use std::io::{self, BufRead};
+
 use population::Population;
 
 fn main() {
-    let mut population = Population::new();
+	let stdin = io::stdin();
+
+	println!("Population phrase: ");
+    let to_find = stdin.lock().lines().next().unwrap().unwrap();
+
+    let mut population = Population::new(to_find);
 
     println!("{:?}", &population.find_best());
 }

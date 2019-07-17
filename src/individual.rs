@@ -2,19 +2,21 @@ extern crate rand;
 
 use rand::prelude::*;
 
-use super::config::{GENES, TO_FIND};
+use super::config::GENES;
 
 #[derive(Debug, Clone)]
 pub struct Individual {
 	pub chromosome: String,
 	pub fitness: i32,
+	to_find: String
 }
 
 impl Individual {
-	pub fn new() -> Individual {
+	pub fn new(to_find: String) -> Individual {
 		let mut ind = Individual {
 			chromosome: Default::default(),
 			fitness: Default::default(),
+			to_find: to_find
 		};
 
 		ind.chromosome = ind.create_genome();
@@ -31,7 +33,7 @@ impl Individual {
 
 	fn create_genome(&self) -> String {
 		let mut ret: String = String::new();
-		let mut count = TO_FIND.len();
+		let mut count = self.to_find.len();
 
 		while count > 0 {
 			ret.push_str(&self.mutate_genes());
@@ -47,9 +49,10 @@ impl Individual {
 		let mut c2: char;
 
 		let mut fitness: i32 = 0;
+		let to_find_len: i32 = self.to_find.len() as i32;
 
-		for i in 0..TO_FIND.len() {
-			c1 = String::from(TO_FIND).chars().nth(i as usize).unwrap();
+		for i in 0..to_find_len {
+			c1 = self.to_find.chars().nth(i as usize).unwrap();
 			c2 = self.chromosome.chars().nth(i as usize).unwrap();
 
 			if c1 != c2 {
@@ -64,6 +67,7 @@ impl Individual {
 		let mut ret = Individual {
 			chromosome: Default::default(),
 			fitness: Default::default(),
+			to_find: self.to_find.to_owned()
 		};
 
 		let c1 = &self.chromosome;
